@@ -1,0 +1,5 @@
+Compile:
+g++ src\main.cpp src\Student.cpp src\StudentManager.cpp -Iinclude -o StudentManagementSystem.exe
+
+Run:
+.\StudentManagementSystem.exe
