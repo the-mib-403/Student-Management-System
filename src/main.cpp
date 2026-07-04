@@ -14,8 +14,7 @@ int main()
         3,
         3.85,
         "rahim@gmail.com",
-        "01711111111"
-    );
+        "01711111111");
 
     Student s2(
         102,
@@ -24,8 +23,7 @@ int main()
         2,
         3.60,
         "karim@gmail.com",
-        "01822222222"
-    );
+        "01822222222");
 
     manager.addStudent(s1);
     manager.addStudent(s2);
@@ -42,7 +40,7 @@ int main()
         switch (choice)
         {
         case 1:
-            std::cout << "\nAdd Student feature is under development.\n";
+            manager.addStudentInteractive();
             break;
 
         case 2:

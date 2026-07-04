@@ -1,5 +1,54 @@
 #include "../include/StudentManager.h"
 #include <iostream>
+void StudentManager::addStudentInteractive()
+{
+    int id;
+    int semester;
+    double cgpa;
+    std::string name;
+    std::string department;
+    std::string email;
+    std::string phone;
+
+    std::cout << "\nEnter Student ID: ";
+    std::cin >> id;
+
+    std::cin.ignore();
+
+    std::cout << "Enter Student Name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Enter Department: ";
+    std::getline(std::cin, department);
+
+    std::cout << "Enter Semester: ";
+    std::cin >> semester;
+
+    std::cout << "Enter CGPA: ";
+    std::cin >> cgpa;
+
+    std::cin.ignore();
+
+    std::cout << "Enter Email: ";
+    std::getline(std::cin, email);
+
+    std::cout << "Enter Phone: ";
+    std::getline(std::cin, phone);
+
+    Student student(
+        id,
+        name,
+        department,
+        semester,
+        cgpa,
+        email,
+        phone
+    );
+
+    addStudent(student);
+
+    std::cout << "\nStudent added successfully!\n";
+}
 
 void StudentManager::addStudent(const Student &student)
 {

@@ -8,5 +8,6 @@ private:
 
 public:
     void addStudent(const Student &student);
+    void addStudentInteractive();   // <-- NEW
     void displayStudents() const;
 };
