@@ -1,3 +1,4 @@
+#include<iostream>
 #include "../include/StudentManager.h"
 #include "../include/Menu.h"
 int main()
@@ -5,6 +6,9 @@ int main()
     // Show Menu
     Menu menu;
     menu.showMainMenu();
+
+    int choice;
+    std::cin >> choice;
 
     StudentManager manager;
 
@@ -31,7 +35,18 @@ int main()
     manager.addStudent(s1);
     manager.addStudent(s2);
 
-    manager.displayStudents();
-
+    if (choice == 2)
+    {
+        manager.displayStudents();
+    }
+    else if (choice == 4)
+    {
+        std::cout << "\nThank you for using Student Management System.\n";
+    }
+    else
+    {
+        std::cout << "\nThis feature is under development.\n";
+    }
+    
     return 0;
 }
