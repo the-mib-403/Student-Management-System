@@ -1,17 +1,12 @@
-#include<iostream>
+#include <iostream>
 #include "../include/StudentManager.h"
 #include "../include/Menu.h"
+
 int main()
 {
-    // Show Menu
-    Menu menu;
-    menu.showMainMenu();
-
-    int choice;
-    std::cin >> choice;
-
     StudentManager manager;
 
+    // Demo Students
     Student s1(
         101,
         "Rahim",
@@ -35,18 +30,41 @@ int main()
     manager.addStudent(s1);
     manager.addStudent(s2);
 
-    if (choice == 2)
+    Menu menu;
+    int choice;
+
+    while (true)
     {
-        manager.displayStudents();
+        menu.showMainMenu();
+
+        std::cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            std::cout << "\nAdd Student feature is under development.\n";
+            break;
+
+        case 2:
+            manager.displayStudents();
+            break;
+
+        case 3:
+            std::cout << "\nSearch Student feature is under development.\n";
+            break;
+
+        case 4:
+            std::cout << "\nThank you for using Student Management System.\n";
+            return 0;
+
+        default:
+            std::cout << "\nInvalid Choice!\n";
+        }
+
+        std::cout << "\nPress Enter to continue...";
+        std::cin.ignore();
+        std::cin.get();
     }
-    else if (choice == 4)
-    {
-        std::cout << "\nThank you for using Student Management System.\n";
-    }
-    else
-    {
-        std::cout << "\nThis feature is under development.\n";
-    }
-    
+
     return 0;
 }
