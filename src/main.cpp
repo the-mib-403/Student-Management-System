@@ -1,7 +1,11 @@
 #include "../include/StudentManager.h"
-
+#include "../include/Menu.h"
 int main()
 {
+    // Show Menu
+    Menu menu;
+    menu.showMainMenu();
+
     StudentManager manager;
 
     Student s1(
@@ -31,11 +35,3 @@ int main()
 
     return 0;
 }
-
-
-
-
-
-
-// g++ src\main.cpp src\Student.cpp src\StudentManager.cpp -Iinclude -o StudentManagementSystem.exe
-// .\StudentManagementSystem.exe (Powershell a program rum err command)
