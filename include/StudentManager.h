@@ -8,7 +8,8 @@ private:
 
 public:
     void addStudent(const Student &student);
-    void addStudentInteractive();   // <-- NEW
+    void addStudentInteractive();   
     void displayStudents() const;
     void searchStudent() const;
+    bool isIdExists(int id) const;
 };

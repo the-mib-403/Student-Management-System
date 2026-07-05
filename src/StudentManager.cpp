@@ -13,6 +13,12 @@ void StudentManager::addStudentInteractive()
     std::cout << "\nEnter Student ID: ";
     std::cin >> id;
 
+    if (isIdExists(id))
+    {
+        std::cout << "\nStudent ID already exists!\n";
+        return;
+    }
+
     std::cin.ignore();
 
     std::cout << "Enter Student Name: ";
@@ -79,6 +85,19 @@ void StudentManager::searchStudent() const
     {
         std::cout << "\nStudent not found.\n";
     }
+}
+
+bool StudentManager::isIdExists(int id) const
+{
+    for (const Student &student : students)
+    {
+        if (student.getId() == id)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void StudentManager::displayStudents() const
