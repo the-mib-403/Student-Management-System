@@ -42,8 +42,7 @@ void StudentManager::addStudentInteractive()
         semester,
         cgpa,
         email,
-        phone
-    );
+        phone);
 
     addStudent(student);
 
@@ -53,6 +52,33 @@ void StudentManager::addStudentInteractive()
 void StudentManager::addStudent(const Student &student)
 {
     students.push_back(student);
+}
+
+void StudentManager::searchStudent() const
+{
+    int id;
+
+    std::cout << "\nEnter Student ID: ";
+    std::cin >> id;
+
+    bool found = false;
+
+    for (const Student &student : students)
+    {
+        if (student.getId() == id)
+        {
+            std::cout << "\nStudent Found!\n\n";
+            student.display();
+
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << "\nStudent not found.\n";
+    }
 }
 
 void StudentManager::displayStudents() const

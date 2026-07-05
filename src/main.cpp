@@ -48,7 +48,7 @@ int main()
             break;
 
         case 3:
-            std::cout << "\nSearch Student feature is under development.\n";
+            manager.searchStudent();
             break;
 
         case 4:
