@@ -100,6 +100,176 @@ bool StudentManager::isIdExists(int id) const
     return false;
 }
 
+void StudentManager::updateStudent()
+{
+    int id;
+
+    std::cout << "\nEnter Student ID: ";
+    std::cin >> id;
+
+    for (Student &student : students)
+    {
+        if (student.getId() == id)
+        {
+            std::cout << "\n========== Student Found ==========\n";
+
+            std::cout << "\nWhat do you want to update?\n";
+            std::cout << "1. Name\n";
+            std::cout << "2. Department\n";
+            std::cout << "3. Semester\n";
+            std::cout << "4. CGPA\n";
+            std::cout << "5. Email\n";
+            std::cout << "6. Phone\n";
+            std::cout << "7. Everything\n";
+            std::cout << "8. Cancel\n";
+
+            int choice;
+            std::cout << "\nEnter your choice: ";
+            std::cin >> choice;
+            switch (choice)
+            {
+            case 1:
+            {
+                std::string newName;
+
+                std::cin.ignore();
+
+                std::cout << "\nEnter New Name: ";
+                std::getline(std::cin, newName);
+
+                student.setName(newName);
+
+                std::cout << "\nStudent name updated successfully!\n";
+
+                break;
+            }
+
+            case 2:
+            {
+                std::string newDepartment;
+
+                std::cin.ignore();
+
+                std::cout << "\nEnter New Department: ";
+                std::getline(std::cin, newDepartment);
+
+                student.setDepartment(newDepartment);
+
+                std::cout << "\nDepartment updated successfully!\n";
+
+                break;
+            }
+
+            case 3:
+            {
+                int newSemester;
+
+                std::cout << "\nEnter New Semester: ";
+                std::cin >> newSemester;
+
+                student.setSemester(newSemester);
+
+                std::cout << "\nSemester updated successfully!\n";
+
+                break;
+            }
+
+            case 4:
+            {
+                double newcgpa;
+
+                std::cout << "\nEnter New CGPA: ";
+                std::cin >> newcgpa;
+                student.setCgpa(newcgpa);
+                std::cout << "\nCGPA updated successfully!\n";
+                break;
+            }
+            case 5:
+            {
+                std::string newEmail;
+
+                std::cin.ignore();
+
+                std::cout << "\nEnter New Email: ";
+                std::getline(std::cin, newEmail);
+
+                student.setEmail(newEmail);
+
+                std::cout << "\nEmail updated successfully!\n";
+
+                break;
+            }
+            case 6:
+            {
+                std::string newPhone;
+                std::cin.ignore();
+                std::cout << "\nEnter New Phone: ";
+                std::getline(std::cin, newPhone);
+                student.setPhone(newPhone);
+                std::cout << "\nPhone updated successfully!\n";
+                break;
+            }
+            case 7:
+            {
+                std::string newName;
+                std::string newDepartment;
+                int newSemester;
+                double newCgpa;
+                std::string newEmail;
+                std::string newPhone;
+
+                std::cin.ignore();
+
+                std::cout << "\nEnter New Name: ";
+                std::getline(std::cin, newName);
+
+                std::cout << "Enter New Department: ";
+                std::getline(std::cin, newDepartment);
+
+                std::cout << "Enter New Semester: ";
+                std::cin >> newSemester;
+
+                std::cout << "Enter New CGPA: ";
+                std::cin >> newCgpa;
+
+                std::cin.ignore();
+
+                std::cout << "Enter New Email: ";
+                std::getline(std::cin, newEmail);
+
+                std::cout << "Enter New Phone: ";
+                std::getline(std::cin, newPhone);
+
+                student.setName(newName);
+                student.setDepartment(newDepartment);
+                student.setSemester(newSemester);
+                student.setCgpa(newCgpa);
+                student.setEmail(newEmail);
+                student.setPhone(newPhone);
+
+                std::cout << "\nStudent updated successfully!\n";
+
+                break;
+            }
+
+            case 8:
+            {
+                std::cout << "\nUpdate cancelled.\n";
+                break;
+            }
+
+            default:
+            {
+                std::cout << "\nThis update option is under development.\n";
+            }
+            }
+            return;
+        }
+    }
+
+    std::cout << "\nStudent not found.\n";
+}
+
 void StudentManager::displayStudents() const
 {
     if (students.empty())

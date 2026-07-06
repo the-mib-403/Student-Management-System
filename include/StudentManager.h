@@ -12,4 +12,5 @@ public:
     void displayStudents() const;
     void searchStudent() const;
     bool isIdExists(int id) const;
+    void updateStudent();
 };

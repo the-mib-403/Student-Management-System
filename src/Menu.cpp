@@ -11,7 +11,7 @@ void Menu::showMainMenu() const
     std::cout << "1. Add Student\n";
     std::cout << "2. Display Students\n";
     std::cout << "3. Search Student\n";
-    std::cout << "4. Exit\n\n";
-
+    std::cout << "4. Update Student\n";
+    std::cout << "5. Exit\n";
     std::cout << "Enter your choice : ";
 }
