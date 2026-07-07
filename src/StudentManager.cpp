@@ -1,5 +1,7 @@
 #include "../include/StudentManager.h"
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 void StudentManager::addStudentInteractive()
 {
     int id;
@@ -262,6 +264,56 @@ void StudentManager::updateStudent()
             {
                 std::cout << "\nThis update option is under development.\n";
             }
+            }
+            return;
+        }
+    }
+
+    std::cout << "\nStudent not found.\n";
+}
+
+void StudentManager::deleteStudent()
+{
+    int id;
+
+    std::cout << "\nEnter Student ID: ";
+    std::cin >> id;
+
+    for (auto it = students.begin(); it != students.end(); ++it)
+    {
+        if (it->getId() == id)
+        {
+            std::cout << "\n========== Student Found ==========\n\n";
+
+            it->display();
+
+            std::string choice;
+
+            while (true)
+            {
+                std::cout << "\nAre you sure you want to delete this student? (YES/NO): ";
+                std::cin >> choice;
+
+                std::transform(choice.begin(), choice.end(), choice.begin(),
+                               [](unsigned char c)
+                               {
+                                   return std::tolower(c);
+                               });
+
+                if (choice == "yes")
+                {
+                    students.erase(it);
+                    std::cout << "\nStudent deleted successfully!\n";
+                    break;
+                }
+
+                if (choice == "no")
+                {
+                    std::cout << "\nDeletion cancelled.\n";
+                    break;
+                }
+
+                std::cout << "\nInvalid input. Please enter YES or NO.\n";
             }
             return;
         }

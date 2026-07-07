@@ -56,6 +56,11 @@ int main()
             break;
 
         case 5:
+        
+            manager.deleteStudent();
+            break;
+        
+        case 6:
             std::cout << "\nThank you for using Student Management System.\n";
             return 0;
 
