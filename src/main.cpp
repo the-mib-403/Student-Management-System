@@ -6,28 +6,6 @@ int main()
 {
     StudentManager manager;
 
-    // Demo Students
-    Student s1(
-        101,
-        "Rahim",
-        "CSE",
-        3,
-        3.85,
-        "rahim@gmail.com",
-        "01711111111");
-
-    Student s2(
-        102,
-        "Karim",
-        "EEE",
-        2,
-        3.60,
-        "karim@gmail.com",
-        "01822222222");
-
-    manager.addStudent(s1);
-    manager.addStudent(s2);
-
     Menu menu;
     int choice;
 

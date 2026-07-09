@@ -2,6 +2,80 @@
 #include <iostream>
 #include <algorithm>
 #include <cctype>
+#include <fstream>
+#include <sstream>
+StudentManager::StudentManager()
+{
+    loadFromFile();
+}
+void StudentManager::saveToFile() const
+{
+    std::ofstream file("database/students.txt");
+
+    if (!file)
+    {
+        std::cout << "Error opening file.\n";
+        return;
+    }
+
+    for (const Student &student : students)
+    {
+        file << student.getId() << ","
+             << student.getName() << ","
+             << student.getDepartment() << ","
+             << student.getSemester() << ","
+             << student.getCgpa() << ","
+             << student.getEmail() << ","
+             << student.getPhone() << '\n';
+    }
+}
+
+void StudentManager::loadFromFile()
+{
+    std::ifstream file("database/students.txt");
+
+    if (!file)
+    {
+        return;
+    }
+
+    std::string line;
+
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+
+        std::string idString;
+        std::string name;
+        std::string department;
+        std::string semesterString;
+        std::string cgpaString;
+        std::string email;
+        std::string phone;
+
+        std::getline(ss, idString, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, department, ',');
+        std::getline(ss, semesterString, ',');
+        std::getline(ss, cgpaString, ',');
+        std::getline(ss, email, ',');
+        std::getline(ss, phone, ',');
+
+        int id = std::stoi(idString);
+        int semester = std::stoi(semesterString);
+        double cgpa = std::stod(cgpaString);
+        Student student(
+            id,
+            name,
+            department,
+            semester,
+            cgpa,
+            email,
+            phone);
+        students.push_back(student);
+    }
+}
+
 void StudentManager::addStudentInteractive()
 {
     int id;
@@ -53,13 +127,13 @@ void StudentManager::addStudentInteractive()
         phone);
 
     addStudent(student);
-
     std::cout << "\nStudent added successfully!\n";
 }
 
 void StudentManager::addStudent(const Student &student)
 {
     students.push_back(student);
+    saveToFile();
 }
 
 void StudentManager::searchStudent() const
@@ -140,7 +214,7 @@ void StudentManager::updateStudent()
                 std::getline(std::cin, newName);
 
                 student.setName(newName);
-
+                saveToFile();
                 std::cout << "\nStudent name updated successfully!\n";
 
                 break;
@@ -156,7 +230,7 @@ void StudentManager::updateStudent()
                 std::getline(std::cin, newDepartment);
 
                 student.setDepartment(newDepartment);
-
+                saveToFile();
                 std::cout << "\nDepartment updated successfully!\n";
 
                 break;
@@ -170,7 +244,7 @@ void StudentManager::updateStudent()
                 std::cin >> newSemester;
 
                 student.setSemester(newSemester);
-
+                saveToFile();
                 std::cout << "\nSemester updated successfully!\n";
 
                 break;
@@ -183,6 +257,7 @@ void StudentManager::updateStudent()
                 std::cout << "\nEnter New CGPA: ";
                 std::cin >> newcgpa;
                 student.setCgpa(newcgpa);
+                saveToFile();
                 std::cout << "\nCGPA updated successfully!\n";
                 break;
             }
@@ -196,7 +271,7 @@ void StudentManager::updateStudent()
                 std::getline(std::cin, newEmail);
 
                 student.setEmail(newEmail);
-
+                saveToFile();
                 std::cout << "\nEmail updated successfully!\n";
 
                 break;
@@ -208,6 +283,7 @@ void StudentManager::updateStudent()
                 std::cout << "\nEnter New Phone: ";
                 std::getline(std::cin, newPhone);
                 student.setPhone(newPhone);
+                saveToFile();
                 std::cout << "\nPhone updated successfully!\n";
                 break;
             }
@@ -248,7 +324,7 @@ void StudentManager::updateStudent()
                 student.setCgpa(newCgpa);
                 student.setEmail(newEmail);
                 student.setPhone(newPhone);
-
+                saveToFile();
                 std::cout << "\nStudent updated successfully!\n";
 
                 break;
@@ -303,11 +379,12 @@ void StudentManager::deleteStudent()
                 if (choice == "yes")
                 {
                     students.erase(it);
+                    saveToFile();
                     std::cout << "\nStudent deleted successfully!\n";
                     break;
                 }
 
-                if (choice == "no")
+                else if (choice == "no")
                 {
                     std::cout << "\nDeletion cancelled.\n";
                     break;
