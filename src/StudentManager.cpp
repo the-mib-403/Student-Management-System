@@ -4,6 +4,7 @@
 #include <cctype>
 #include <fstream>
 #include <sstream>
+#include <limits>
 StudentManager::StudentManager()
 {
     loadFromFile();
@@ -43,6 +44,11 @@ void StudentManager::loadFromFile()
 
     while (std::getline(file, line))
     {
+        if (line.empty())
+        {
+            continue;
+        }
+
         std::stringstream ss(line);
 
         std::string idString;
@@ -61,18 +67,27 @@ void StudentManager::loadFromFile()
         std::getline(ss, email, ',');
         std::getline(ss, phone, ',');
 
-        int id = std::stoi(idString);
-        int semester = std::stoi(semesterString);
-        double cgpa = std::stod(cgpaString);
-        Student student(
-            id,
-            name,
-            department,
-            semester,
-            cgpa,
-            email,
-            phone);
-        students.push_back(student);
+        try
+        {
+            int id = std::stoi(idString);
+            int semester = std::stoi(semesterString);
+            double cgpa = std::stod(cgpaString);
+
+            Student student(
+                id,
+                name,
+                department,
+                semester,
+                cgpa,
+                email,
+                phone);
+
+            students.push_back(student);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Warning: Invalid record skipped.\n";
+        }
     }
 }
 
@@ -81,41 +96,265 @@ void StudentManager::addStudentInteractive()
     int id;
     int semester;
     double cgpa;
+    std::string input;
     std::string name;
     std::string department;
     std::string email;
     std::string phone;
 
-    std::cout << "\nEnter Student ID: ";
-    std::cin >> id;
-
-    if (isIdExists(id))
+    while (true)
     {
-        std::cout << "\nStudent ID already exists!\n";
-        return;
+        std::cout << "\nEnter Student ID: ";
+        std::getline(std::cin, input);
+
+        try
+        {
+            id = std::stoi(input);
+        }
+        catch (...)
+        {
+            std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
+            continue;
+        }
+
+        if (id <= 0)
+        {
+            std::cout << "\nStudent ID must be greater than 0.\n";
+            continue;
+        }
+
+        if (isIdExists(id))
+        {
+            std::cout << "\nStudent ID already exists. Please enter another ID.\n";
+            continue;
+        }
+
+        break;
     }
 
-    std::cin.ignore();
+    while (true)
+    {
+        std::cout << "Enter Student Name: ";
+        std::getline(std::cin, name);
 
-    std::cout << "Enter Student Name: ";
-    std::getline(std::cin, name);
+        bool isValid = true;
 
-    std::cout << "Enter Department: ";
-    std::getline(std::cin, department);
+        for (char c : name)
+        {
+            if (!(std::isalpha(static_cast<unsigned char>(c)) ||
+                  c == ' ' ||
+                  c == '.' ||
+                  c == '-' ||
+                  c == '\''))
+            {
+                isValid = false;
+                break;
+            }
+        }
 
-    std::cout << "Enter Semester: ";
-    std::cin >> semester;
+        if (name.empty())
+        {
+            std::cout << "\nName cannot be empty.\n";
+            continue;
+        }
 
-    std::cout << "Enter CGPA: ";
-    std::cin >> cgpa;
+        if (!isValid)
+        {
+            std::cout << "\nName may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+            continue;
+        }
 
-    std::cin.ignore();
+        break;
+    }
 
-    std::cout << "Enter Email: ";
-    std::getline(std::cin, email);
+    while (true)
+    {
+        std::cout << "Enter Department: ";
+        std::getline(std::cin, department);
 
-    std::cout << "Enter Phone: ";
-    std::getline(std::cin, phone);
+        bool isValid = true;
+
+        if (department.empty())
+        {
+            std::cout << "\nDepartment cannot be empty.\n";
+            continue;
+        }
+
+        for (char c : department)
+        {
+            if (!(std::isalpha(static_cast<unsigned char>(c)) ||
+                  c == ' ' ||
+                  c == '&'))
+            {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (!isValid)
+        {
+            std::cout << "\nDepartment may contain only letters, spaces, and ampersands (&).\n";
+            continue;
+        }
+
+        break;
+    }
+    while (true)
+    {
+        std::cout << "Enter Semester: ";
+        std::getline(std::cin, input);
+
+        try
+        {
+            semester = std::stoi(input);
+        }
+        catch (...)
+        {
+            std::cout << "\nInvalid input. Please enter a numeric semester.\n";
+            continue;
+        }
+
+        if (semester < 1 || semester > 12)
+        {
+            std::cout << "\nSemester must be between 1 and 12.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    while (true)
+    {
+        std::cout << "Enter CGPA: ";
+        std::getline(std::cin, input);
+
+        try
+        {
+            cgpa = std::stod(input);
+        }
+        catch (...)
+        {
+            std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
+            continue;
+        }
+
+        if (cgpa < 0.0 || cgpa > 4.0)
+        {
+            std::cout << "\nCGPA must be between 0.00 and 4.00.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    while (true)
+    {
+        std::cout << "Enter Email: ";
+        std::getline(std::cin, email);
+
+        size_t atPos = email.find('@');
+        size_t lastAtPos = email.rfind('@');
+        size_t dotPos = email.find('.', atPos + 1);
+
+        // Email cannot be empty
+        if (email.empty())
+        {
+            std::cout << "\nEmail cannot be empty.\n";
+            continue;
+        }
+
+        // Email cannot contain spaces
+        if (email.find(' ') != std::string::npos)
+        {
+            std::cout << "\nEmail cannot contain spaces.\n";
+            continue;
+        }
+
+        // Email must contain exactly one '@'
+        if (atPos == std::string::npos)
+        {
+            std::cout << "\nEmail must contain exactly one at sign (@).\n";
+            continue;
+        }
+
+        if (atPos != lastAtPos)
+        {
+            std::cout << "\nEmail must contain only one at sign (@).\n";
+            continue;
+        }
+
+        // Username must exist before '@'
+        if (atPos == 0)
+        {
+            std::cout << "\nEmail must contain a username before the at sign (@).\n";
+            continue;
+        }
+
+        // Domain must exist after '@'
+        if (atPos == email.length() - 1)
+        {
+            std::cout << "\nEmail must contain a domain after the at sign (@).\n";
+            continue;
+        }
+
+        // Dot must exist after '@'
+        if (dotPos == std::string::npos)
+        {
+            std::cout << "\nEmail must contain a valid domain extension.\n";
+            continue;
+        }
+
+        // Domain name cannot be empty
+        if (dotPos == atPos + 1)
+        {
+            std::cout << "\nEmail must contain a valid domain name.\n";
+            continue;
+        }
+
+        // Extension cannot be empty
+        if (dotPos == email.length() - 1)
+        {
+            std::cout << "\nEmail must contain a valid domain extension.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    while (true)
+    {
+        std::cout << "Enter Phone: ";
+        std::getline(std::cin, phone);
+
+        bool isValid = true;
+
+        if (phone.length() != 11)
+        {
+            isValid = false;
+        }
+
+        for (char c : phone)
+        {
+            if (!std::isdigit(static_cast<unsigned char>(c)))
+            {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (phone.substr(0, 2) != "01")
+        {
+            isValid = false;
+        }
+
+        if (!isValid)
+        {
+            std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
+            continue;
+        }
+
+        break;
+    }
 
     Student student(
         id,

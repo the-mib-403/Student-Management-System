@@ -1,19 +1,29 @@
 #include <iostream>
 #include "../include/StudentManager.h"
 #include "../include/Menu.h"
-
 int main()
 {
     StudentManager manager;
 
     Menu menu;
-    int choice;
+    int choice = 0;
 
     while (true)
     {
         menu.showMainMenu();
 
-        std::cin >> choice;
+        std::string input;
+        std::getline(std::cin, input);
+
+        try
+        {
+            choice = std::stoi(input);
+        }
+        catch (...)
+        {
+            std::cout << "\nInvalid choice. Please enter a number between 1 and 6.\n";
+            continue;
+        }
 
         switch (choice)
         {
@@ -34,10 +44,10 @@ int main()
             break;
 
         case 5:
-        
+
             manager.deleteStudent();
             break;
-        
+
         case 6:
             std::cout << "\nThank you for using Student Management System.\n";
             return 0;
@@ -47,9 +57,9 @@ int main()
         }
 
         std::cout << "\nPress Enter to continue...";
-        std::cin.ignore();
-        std::cin.get();
+        std::getline(std::cin, input);
     }
+
 
     return 0;
 }

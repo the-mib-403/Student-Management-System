@@ -1,1 +1,12 @@
 101,Biplob,CSE,4,3.8,majharulislam0178@gmail.com,01576709411
+174,Humja ,SWE,6,3.8,humja@gmail.com,01782838411
+125,Ruma,SWE,5,3.5,ruma@gmail.com,01545678923
+130,Jhuma,CVIL,7,3.8,jhuma123@gmail.com,013123456987
+150,Banti,English,6,3.6,banti123@gmail.com,014123654789
+160,Kalua,LAw,5,3.9,kalua@gmail.com,01332145698
+170,Shaharia,CSE,5,3.5,saharia@gmail.com,01515984762
+180,Fahad,CSE,5,2.9,fahad@gmail.com,01915963248
+190,Ratul,CSE,7,3.7,vugijugi@gmail.com,01314785236
+200,Jhontu,CSE,5,3.5,jhontu@gmail.com,01536985214
+250,Nihad,Statistics,5,3.8,nihad@gmail.com,01785214796
+240,Moon,CSE,6,3.9,moon@gmail.com,01525896314
