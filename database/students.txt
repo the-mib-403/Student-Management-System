@@ -9,3 +9,4 @@
 200,Jhontu,CSE,5,3.5,jhontu@gmail.com,01536985214
 250,Nihad,Statistics,5,3.8,nihad@gmail.com,01785214796
 240,Moon,CSE,6,3.9,moon12@gmail.com,01525896314
+132,Karim Hossin,EEE,5,3.9,karim@gmail.com,01375321485

@@ -10,6 +10,10 @@ private:
     
     void loadFromFile();
     void saveToFile() const;
+    bool isValidName(const std::string &name) const;
+    bool isValidDepartment(const std::string &department) const;
+    bool isValidEmail(const std::string &email) const;
+    bool isValidPhone(const std::string &phone) const;
 
 public:
     StudentManager();

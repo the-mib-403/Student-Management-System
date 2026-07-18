@@ -143,30 +143,9 @@ void StudentManager::addStudentInteractive()
         std::cout << "Enter Student Name: ";
         std::getline(std::cin, name);
 
-        bool isValid = true;
-
-        for (char c : name)
+        if (!isValidName(name))
         {
-            if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                  c == ' ' ||
-                  c == '.' ||
-                  c == '-' ||
-                  c == '\''))
-            {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (name.empty())
-        {
-            std::cout << "\nName cannot be empty.\n";
-            continue;
-        }
-
-        if (!isValid)
-        {
-            std::cout << "\nName may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+            std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
             continue;
         }
 
@@ -178,33 +157,15 @@ void StudentManager::addStudentInteractive()
         std::cout << "Enter Department: ";
         std::getline(std::cin, department);
 
-        bool isValid = true;
-
-        if (department.empty())
+        if (!isValidDepartment(department))
         {
-            std::cout << "\nDepartment cannot be empty.\n";
-            continue;
-        }
-
-        for (char c : department)
-        {
-            if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                  c == ' ' ||
-                  c == '&'))
-            {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (!isValid)
-        {
-            std::cout << "\nDepartment may contain only letters, spaces, and ampersands (&).\n";
+            std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
             continue;
         }
 
         break;
     }
+
     while (true)
     {
         std::cout << "Enter Semester: ";
@@ -272,69 +233,9 @@ void StudentManager::addStudentInteractive()
         std::cout << "Enter Email: ";
         std::getline(std::cin, email);
 
-        size_t atPos = email.find('@');
-        size_t lastAtPos = email.rfind('@');
-        size_t dotPos = email.find('.', atPos + 1);
-
-        // Email cannot be empty
-        if (email.empty())
+        if (!isValidEmail(email))
         {
-            std::cout << "\nEmail cannot be empty.\n";
-            continue;
-        }
-
-        // Email cannot contain spaces
-        if (email.find(' ') != std::string::npos)
-        {
-            std::cout << "\nEmail cannot contain spaces.\n";
-            continue;
-        }
-
-        // Email must contain exactly one '@'
-        if (atPos == std::string::npos)
-        {
-            std::cout << "\nEmail must contain exactly one at sign (@).\n";
-            continue;
-        }
-
-        if (atPos != lastAtPos)
-        {
-            std::cout << "\nEmail must contain only one at sign (@).\n";
-            continue;
-        }
-
-        // Username must exist before '@'
-        if (atPos == 0)
-        {
-            std::cout << "\nEmail must contain a username before the at sign (@).\n";
-            continue;
-        }
-
-        // Domain must exist after '@'
-        if (atPos == email.length() - 1)
-        {
-            std::cout << "\nEmail must contain a domain after the at sign (@).\n";
-            continue;
-        }
-
-        // Dot must exist after '@'
-        if (dotPos == std::string::npos)
-        {
-            std::cout << "\nEmail must contain a valid domain extension.\n";
-            continue;
-        }
-
-        // Domain name cannot be empty
-        if (dotPos == atPos + 1)
-        {
-            std::cout << "\nEmail must contain a valid domain name.\n";
-            continue;
-        }
-
-        // Extension cannot be empty
-        if (dotPos == email.length() - 1)
-        {
-            std::cout << "\nEmail must contain a valid domain extension.\n";
+            std::cout << "\nInvalid email. Please enter a valid email address.\n";
             continue;
         }
 
@@ -346,28 +247,7 @@ void StudentManager::addStudentInteractive()
         std::cout << "Enter Phone: ";
         std::getline(std::cin, phone);
 
-        bool isValid = true;
-
-        if (phone.length() != 11)
-        {
-            isValid = false;
-        }
-
-        for (char c : phone)
-        {
-            if (!std::isdigit(static_cast<unsigned char>(c)))
-            {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (phone.substr(0, 2) != "01")
-        {
-            isValid = false;
-        }
-
-        if (!isValid)
+        if (!isValidPhone(phone))
         {
             std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
             continue;
@@ -462,6 +342,111 @@ bool StudentManager::isIdExists(int id) const
     }
 
     return false;
+}
+
+bool StudentManager::isValidName(const std::string &name) const
+{
+    if (name.empty())
+    {
+        return false;
+    }
+
+    for (char c : name)
+    {
+        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
+              c == ' ' ||
+              c == '.' ||
+              c == '-' ||
+              c == '\''))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool StudentManager::isValidDepartment(const std::string &department) const
+{
+    if (department.empty())
+    {
+        return false;
+    }
+
+    for (char c : department)
+    {
+        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
+              c == ' ' ||
+              c == '&'))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool StudentManager::isValidEmail(const std::string &email) const
+{
+    if (email.empty())
+    {
+        return false;
+    }
+
+    if (email.find(' ') != std::string::npos)
+    {
+        return false;
+    }
+
+    size_t atPos = email.find('@');
+    size_t lastAtPos = email.rfind('@');
+
+    if (atPos == std::string::npos || atPos != lastAtPos)
+    {
+        return false;
+    }
+
+    if (atPos == 0 || atPos == email.length() - 1)
+    {
+        return false;
+    }
+
+    size_t dotPos = email.find('.', atPos + 1);
+
+    if (dotPos == std::string::npos)
+    {
+        return false;
+    }
+
+    if (dotPos == atPos + 1 || dotPos == email.length() - 1)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool StudentManager::isValidPhone(const std::string &phone) const
+{
+    if (phone.length() != 11)
+    {
+        return false;
+    }
+
+    for (char c : phone)
+    {
+        if (!std::isdigit(static_cast<unsigned char>(c)))
+        {
+            return false;
+        }
+    }
+
+    if (phone.substr(0, 2) != "01")
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void StudentManager::updateStudent()
@@ -559,30 +544,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Name: ";
                     std::getline(std::cin, newName);
 
-                    bool isValid = true;
-
-                    for (char c : newName)
+                    if (!isValidName(newName))
                     {
-                        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                              c == ' ' ||
-                              c == '.' ||
-                              c == '-' ||
-                              c == '\''))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (newName.empty())
-                    {
-                        std::cout << "\nName cannot be empty.\n";
-                        continue;
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nName may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+                        std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
                         continue;
                     }
 
@@ -605,28 +569,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Department: ";
                     std::getline(std::cin, newDepartment);
 
-                    bool isValid = true;
-
-                    if (newDepartment.empty())
+                    if (!isValidDepartment(newDepartment))
                     {
-                        std::cout << "\nDepartment cannot be empty.\n";
-                        continue;
-                    }
-
-                    for (char c : newDepartment)
-                    {
-                        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                              c == ' ' ||
-                              c == '&'))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nDepartment may contain only letters, spaces, and ampersands (&).\n";
+                        std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
                         continue;
                     }
 
@@ -735,61 +680,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Email: ";
                     std::getline(std::cin, newEmail);
 
-                    size_t atPos = newEmail.find('@');
-                    size_t lastAtPos = newEmail.rfind('@');
-                    size_t dotPos = newEmail.find('.', atPos + 1);
-
-                    if (newEmail.empty())
+                    if (!isValidEmail(newEmail))
                     {
-                        std::cout << "\nEmail cannot be empty.\n";
-                        continue;
-                    }
-
-                    if (newEmail.find(' ') != std::string::npos)
-                    {
-                        std::cout << "\nEmail cannot contain spaces.\n";
-                        continue;
-                    }
-
-                    if (atPos == std::string::npos)
-                    {
-                        std::cout << "\nEmail must contain exactly one at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos != lastAtPos)
-                    {
-                        std::cout << "\nEmail must contain only one at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos == 0)
-                    {
-                        std::cout << "\nEmail must contain a username before the at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos == newEmail.length() - 1)
-                    {
-                        std::cout << "\nEmail must contain a domain after the at sign (@).\n";
-                        continue;
-                    }
-
-                    if (dotPos == std::string::npos)
-                    {
-                        std::cout << "\nEmail must contain a valid domain extension.\n";
-                        continue;
-                    }
-
-                    if (dotPos == atPos + 1)
-                    {
-                        std::cout << "\nEmail must contain a valid domain name.\n";
-                        continue;
-                    }
-
-                    if (dotPos == newEmail.length() - 1)
-                    {
-                        std::cout << "\nEmail must contain a valid domain extension.\n";
+                        std::cout << "\nInvalid email. Please enter a valid email address.\n";
                         continue;
                     }
 
@@ -812,32 +705,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Phone: ";
                     std::getline(std::cin, newPhone);
 
-                    if (newPhone.length() != 11)
+                    if (!isValidPhone(newPhone))
                     {
-                        std::cout << "\nPhone number must contain exactly 11 digits.\n";
-                        continue;
-                    }
-
-                    bool isValid = true;
-
-                    for (char c : newPhone)
-                    {
-                        if (!std::isdigit(static_cast<unsigned char>(c)))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nPhone number must contain digits only.\n";
-                        continue;
-                    }
-
-                    if (newPhone.substr(0, 2) != "01")
-                    {
-                        std::cout << "\nPhone number must start with 01.\n";
+                        std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
                         continue;
                     }
 
@@ -866,30 +736,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Name: ";
                     std::getline(std::cin, newName);
 
-                    bool isValid = true;
-
-                    for (char c : newName)
+                    if (!isValidName(newName))
                     {
-                        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                              c == ' ' ||
-                              c == '.' ||
-                              c == '-' ||
-                              c == '\''))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (newName.empty())
-                    {
-                        std::cout << "\nName cannot be empty.\n";
-                        continue;
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nName may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+                        std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
                         continue;
                     }
 
@@ -902,28 +751,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Department: ";
                     std::getline(std::cin, newDepartment);
 
-                    bool isValid = true;
-
-                    if (newDepartment.empty())
+                    if (!isValidDepartment(newDepartment))
                     {
-                        std::cout << "\nDepartment cannot be empty.\n";
-                        continue;
-                    }
-
-                    for (char c : newDepartment)
-                    {
-                        if (!(std::isalpha(static_cast<unsigned char>(c)) ||
-                              c == ' ' ||
-                              c == '&'))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nDepartment may contain only letters, spaces, and ampersands (&).\n";
+                        std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
                         continue;
                     }
 
@@ -1000,61 +830,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Email: ";
                     std::getline(std::cin, newEmail);
 
-                    size_t atPos = newEmail.find('@');
-                    size_t lastAtPos = newEmail.rfind('@');
-                    size_t dotPos = newEmail.find('.', atPos + 1);
-
-                    if (newEmail.empty())
+                    if (!isValidEmail(newEmail))
                     {
-                        std::cout << "\nEmail cannot be empty.\n";
-                        continue;
-                    }
-
-                    if (newEmail.find(' ') != std::string::npos)
-                    {
-                        std::cout << "\nEmail cannot contain spaces.\n";
-                        continue;
-                    }
-
-                    if (atPos == std::string::npos)
-                    {
-                        std::cout << "\nEmail must contain exactly one at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos != lastAtPos)
-                    {
-                        std::cout << "\nEmail must contain only one at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos == 0)
-                    {
-                        std::cout << "\nEmail must contain a username before the at sign (@).\n";
-                        continue;
-                    }
-
-                    if (atPos == newEmail.length() - 1)
-                    {
-                        std::cout << "\nEmail must contain a domain after the at sign (@).\n";
-                        continue;
-                    }
-
-                    if (dotPos == std::string::npos)
-                    {
-                        std::cout << "\nEmail must contain a valid domain extension.\n";
-                        continue;
-                    }
-
-                    if (dotPos == atPos + 1)
-                    {
-                        std::cout << "\nEmail must contain a valid domain name.\n";
-                        continue;
-                    }
-
-                    if (dotPos == newEmail.length() - 1)
-                    {
-                        std::cout << "\nEmail must contain a valid domain extension.\n";
+                        std::cout << "\nInvalid email. Please enter a valid email address.\n";
                         continue;
                     }
 
@@ -1067,32 +845,9 @@ void StudentManager::updateStudent()
                     std::cout << "Enter New Phone: ";
                     std::getline(std::cin, newPhone);
 
-                    if (newPhone.length() != 11)
+                    if (!isValidPhone(newPhone))
                     {
-                        std::cout << "\nPhone number must contain exactly 11 digits.\n";
-                        continue;
-                    }
-
-                    bool isValid = true;
-
-                    for (char c : newPhone)
-                    {
-                        if (!std::isdigit(static_cast<unsigned char>(c)))
-                        {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (!isValid)
-                    {
-                        std::cout << "\nPhone number must contain digits only.\n";
-                        continue;
-                    }
-
-                    if (newPhone.substr(0, 2) != "01")
-                    {
-                        std::cout << "\nPhone number must start with 01.\n";
+                        std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
                         continue;
                     }
 
