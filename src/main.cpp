@@ -17,7 +17,14 @@ int main()
 
         try
         {
-            choice = std::stoi(input);
+            size_t pos;
+            choice = std::stoi(input, &pos);
+
+            if (pos != input.length())
+            {
+                std::cout << "\nInvalid choice. Please enter a number between 1 and 6.\n";
+                continue;
+            }
         }
         catch (...)
         {
@@ -32,8 +39,72 @@ int main()
             break;
 
         case 2:
-            manager.displayStudents();
+        {
+            while (true)
+            {
+                menu.showDisplayMenu();
+
+                std::string displayInput;
+                std::getline(std::cin, displayInput);
+
+                int displayChoice;
+
+                try
+                {
+                    size_t pos;
+                    displayChoice = std::stoi(displayInput, &pos);
+
+                    if (pos != displayInput.length())
+                    {
+                        std::cout << "\nInvalid input. Please enter a number between 1 and 7.\n";
+                        continue;
+                    }
+                }
+                catch (...)
+                {
+                    std::cout << "\nInvalid input. Please enter a number between 1 and 7.\n";
+                    continue;
+                }
+
+                switch (displayChoice)
+                {
+                case 1:
+                    manager.displayStudents();
+                    break;
+
+                case 2:
+                    manager.displayStudentsSortedByName();
+                    break;
+
+                case 3:
+                    manager.displayStudentsSortedById();
+                    break;
+
+                case 4:
+                    manager.displayStudentsSortedByDepartment();
+                    break;
+
+                case 5:
+                    manager.displayStudentsSortedBySemester();
+                    break;
+
+                case 6:
+                    manager.displayStudentsSortedByCgpa();
+                    break;
+
+                case 7:
+                    break;
+
+                default:
+                    std::cout << "\nInvalid choice. Please enter a number between 1 and 7.\n";
+                    continue;
+                }
+
+                break;
+            }
+
             break;
+        }
 
         case 3:
             manager.searchStudent();
@@ -44,7 +115,6 @@ int main()
             break;
 
         case 5:
-
             manager.deleteStudent();
             break;
 
@@ -59,7 +129,6 @@ int main()
         std::cout << "\nPress Enter to continue...";
         std::getline(std::cin, input);
     }
-
 
     return 0;
 }

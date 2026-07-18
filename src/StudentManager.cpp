@@ -981,3 +981,118 @@ void StudentManager::displayStudents() const
         student.display();
     }
 }
+
+void StudentManager::displayStudentsSortedByName() const
+{
+    if (students.empty())
+    {
+        std::cout << "No students found.\n";
+        return;
+    }
+
+    std::vector<Student> sortedStudents = students;
+
+    std::sort(sortedStudents.begin(), sortedStudents.end(),
+              [](const Student &a, const Student &b)
+              {
+                  return a.getName() < b.getName();
+              });
+
+    for (const Student &student : sortedStudents)
+    {
+        std::cout << "----------------------------\n";
+        student.display();
+    }
+}
+
+void StudentManager::displayStudentsSortedById() const
+{
+    if (students.empty())
+    {
+        std::cout << "No students found.\n";
+        return;
+    }
+
+    std::vector<Student> sortedStudents = students;
+
+    std::sort(sortedStudents.begin(), sortedStudents.end(),
+              [](const Student &a, const Student &b)
+              {
+                  return a.getId() < b.getId();
+              });
+
+    for (const Student &student : sortedStudents)
+    {
+        std::cout << "----------------------------\n";
+        student.display();
+    }
+}
+
+void StudentManager::displayStudentsSortedByDepartment() const
+{
+    if (students.empty())
+    {
+        std::cout << "No students found.\n";
+        return;
+    }
+
+    std::vector<Student> sortedStudents = students;
+
+    std::sort(sortedStudents.begin(), sortedStudents.end(),
+              [](const Student &a, const Student &b)
+              {
+                  return a.getDepartment() < b.getDepartment();
+              });
+
+    for (const Student &student : sortedStudents)
+    {
+        std::cout << "----------------------------\n";
+        student.display();
+    }
+}
+
+void StudentManager::displayStudentsSortedBySemester() const
+{
+    if (students.empty())
+    {
+        std::cout << "No students found.\n";
+        return;
+    }
+
+    std::vector<Student> sortedStudents = students;
+
+    std::sort(sortedStudents.begin(), sortedStudents.end(),
+              [](const Student &a, const Student &b)
+              {
+                  return a.getSemester() < b.getSemester();
+              });
+
+    for (const Student &student : sortedStudents)
+    {
+        std::cout << "----------------------------\n";
+        student.display();
+    }
+}
+
+void StudentManager::displayStudentsSortedByCgpa() const
+{
+    if (students.empty())
+    {
+        std::cout << "No students found.\n";
+        return;
+    }
+
+    std::vector<Student> sortedStudents = students;
+
+    std::sort(sortedStudents.begin(), sortedStudents.end(),
+              [](const Student &a, const Student &b)
+              {
+                  return a.getCgpa() > b.getCgpa();
+              });
+
+    for (const Student &student : sortedStudents)
+    {
+        std::cout << "----------------------------\n";
+        student.display();
+    }
+}
