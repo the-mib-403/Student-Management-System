@@ -275,7 +275,7 @@ void StudentManager::addStudent(const Student &student)
     saveToFile();
 }
 
-void StudentManager::searchStudent() const
+void StudentManager::searchStudentById() const
 {
     int id;
     std::string input;
@@ -328,6 +328,66 @@ void StudentManager::searchStudent() const
     if (!found)
     {
         std::cout << "\nStudent not found.\n";
+    }
+}
+
+void StudentManager::searchStudentByName() const
+{
+    std::string searchName;
+
+    while (true)
+    {
+        std::cout << "\nEnter Student Name: ";
+        std::getline(std::cin, searchName);
+
+        if (!isValidName(searchName))
+        {
+            std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+            continue;
+        }
+
+        break;
+    }
+
+    std::string lowerSearchName = searchName;
+
+    std::transform(lowerSearchName.begin(), lowerSearchName.end(),
+                   lowerSearchName.begin(),
+                   [](unsigned char c)
+                   {
+                       return std::tolower(c);
+                   });
+
+    bool found = false;
+
+    for (const Student &student : students)
+    {
+        std::string studentName = student.getName();
+
+        std::transform(studentName.begin(), studentName.end(),
+                       studentName.begin(),
+                       [](unsigned char c)
+                       {
+                           return std::tolower(c);
+                       });
+
+        if (studentName == lowerSearchName)
+        {
+            if (!found)
+            {
+                std::cout << "\n========== Search Result ==========\n\n";
+            }
+
+            student.display();
+            std::cout << "----------------------------\n";
+
+            found = true;
+        }
+    }
+    
+    if (!found)
+    {
+        std::cout << "\nNo student found with this name.\n";
     }
 }
 

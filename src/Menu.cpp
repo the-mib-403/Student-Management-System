@@ -33,3 +33,17 @@ void Menu::showDisplayMenu() const
     std::cout << "7. Back to Main Menu\n";
     std::cout << "Enter your choice: ";
 }
+
+void Menu::showSearchMenu() const
+{
+    std::cout << "\n";
+    std::cout << "=========================================\n";
+    std::cout << "             SEARCH STUDENTS\n";
+    std::cout << "=========================================\n\n";
+
+    std::cout << "1. Search by Student ID\n";
+    std::cout << "2. Search by Name\n";
+    std::cout << "3. Search by Department\n";
+    std::cout << "4. Back to Main Menu\n";
+    std::cout << "Enter your choice: ";
+}

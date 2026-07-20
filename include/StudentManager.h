@@ -20,7 +20,8 @@ public:
     void addStudent(const Student &student);
     void addStudentInteractive();
 
-    void searchStudent() const;
+    void searchStudentById() const;
+    void searchStudentByName() const;
     void updateStudent();
     void deleteStudent();
 

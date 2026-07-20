@@ -107,9 +107,60 @@ int main()
         }
 
         case 3:
-            manager.searchStudent();
-            break;
+        {
+            while (true)
+            {
+                menu.showSearchMenu();
 
+                std::string searchInput;
+                std::getline(std::cin, searchInput);
+
+                int searchChoice;
+
+                try
+                {
+                    size_t pos;
+                    searchChoice = std::stoi(searchInput, &pos);
+
+                    if (pos != searchInput.length())
+                    {
+                        std::cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
+                        continue;
+                    }
+                }
+                catch (...)
+                {
+                    std::cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
+                    continue;
+                }
+
+                switch (searchChoice)
+                {
+                case 1:
+                    manager.searchStudentById();
+                    break;
+
+                case 2:
+                    manager.searchStudentByName();
+                    break;
+
+                case 3:
+                    std::cout << "\nSearch by Department is under development.\n";
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    std::cout << "\nInvalid choice. Please enter a number between 1 and 4.\n";
+                    continue;
+                }
+
+                break;
+            }
+
+            break;
+        }
         case 4:
             manager.updateStudent();
             break;
