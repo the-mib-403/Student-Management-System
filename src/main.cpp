@@ -40,6 +40,7 @@ int main()
 
         case 2:
         {
+            bool backToMain = false;
             while (true)
             {
                 menu.showDisplayMenu();
@@ -93,14 +94,17 @@ int main()
                     break;
 
                 case 7:
+                    backToMain = true;
                     break;
 
                 default:
                     std::cout << "\nInvalid choice. Please enter a number between 1 and 7.\n";
                     continue;
                 }
-
-                break;
+                if (backToMain)
+                {
+                    break;
+                }
             }
 
             break;
@@ -108,6 +112,7 @@ int main()
 
         case 3:
         {
+            bool backToMain = false;
             while (true)
             {
                 menu.showSearchMenu();
@@ -145,10 +150,11 @@ int main()
                     break;
 
                 case 3:
-                    std::cout << "\nSearch by Department is under development.\n";
+                    manager.searchStudentByDepartment();
                     break;
 
                 case 4:
+                    backToMain = true;
                     break;
 
                 default:
@@ -156,7 +162,10 @@ int main()
                     continue;
                 }
 
-                break;
+                if (backToMain)
+                {
+                    break;
+                }
             }
 
             break;

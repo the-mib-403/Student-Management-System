@@ -22,6 +22,7 @@ public:
 
     void searchStudentById() const;
     void searchStudentByName() const;
+    void searchStudentByDepartment() const;
     void updateStudent();
     void deleteStudent();
 

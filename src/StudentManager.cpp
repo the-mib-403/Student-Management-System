@@ -391,6 +391,66 @@ void StudentManager::searchStudentByName() const
     }
 }
 
+void StudentManager::searchStudentByDepartment() const
+{
+    std::string searchDepartment;
+
+    while (true)
+    {
+        std::cout << "\nEnter Department: ";
+        std::getline(std::cin, searchDepartment);
+
+        if (!isValidDepartment(searchDepartment))
+        {
+            std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
+            continue;
+        }
+
+        break;
+    }
+
+    std::string lowerSearchDepartment = searchDepartment;
+
+    std::transform(lowerSearchDepartment.begin(), lowerSearchDepartment.end(),
+                   lowerSearchDepartment.begin(),
+                   [](unsigned char c)
+                   {
+                       return std::tolower(c);
+                   });
+
+    bool found = false;
+
+    for (const Student &student : students)
+    {
+        std::string studentDepartment = student.getDepartment();
+
+        std::transform(studentDepartment.begin(), studentDepartment.end(),
+                       studentDepartment.begin(),
+                       [](unsigned char c)
+                       {
+                           return std::tolower(c);
+                       });
+
+        if (studentDepartment == lowerSearchDepartment)
+        {
+            if (!found)
+            {
+                std::cout << "\n========== Search Result ==========\n\n";
+            }
+
+            student.display();
+            std::cout << "----------------------------\n";
+
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << "\nNo students found in this department.\n";
+    }
+}
+
 bool StudentManager::isIdExists(int id) const
 {
     for (const Student &student : students)
