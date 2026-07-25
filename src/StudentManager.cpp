@@ -384,7 +384,7 @@ void StudentManager::searchStudentByName() const
             found = true;
         }
     }
-    
+
     if (!found)
     {
         std::cout << "\nNo student found with this name.\n";
@@ -571,520 +571,646 @@ bool StudentManager::isValidPhone(const std::string &phone) const
 
 void StudentManager::updateStudent()
 {
-    int id;
-    std::string input;
-
     while (true)
     {
-        std::cout << "\nEnter Student ID: ";
-        std::getline(std::cin, input);
+        int id;
+        std::string input;
 
-        try
+        while (true)
         {
-            size_t pos;
-            id = std::stoi(input, &pos);
+            std::cout << "\nEnter Student ID: ";
+            std::getline(std::cin, input);
 
-            if (pos != input.length())
+            try
+            {
+                size_t pos;
+                id = std::stoi(input, &pos);
+
+                if (pos != input.length())
+                {
+                    std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
+                    continue;
+                }
+            }
+            catch (...)
             {
                 std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
                 continue;
             }
-        }
-        catch (...)
-        {
-            std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
-            continue;
-        }
 
-        if (id <= 0)
-        {
-            std::cout << "\nStudent ID must be greater than 0.\n";
-            continue;
+            if (id <= 0)
+            {
+                std::cout << "\nStudent ID must be greater than 0.\n";
+                continue;
+            }
+
+            break;
         }
 
-        break;
-    }
+        bool found = false;
 
-    for (Student &student : students)
-    {
-        if (student.getId() == id)
+        for (Student &student : students)
         {
-            std::cout << "\n========== Student Found ==========\n";
+            if (student.getId() == id)
+            {
+                found = true;
 
-            std::cout << "What do you want to update?\n";
-            std::cout << "1. Name\n";
-            std::cout << "2. Department\n";
-            std::cout << "3. Semester\n";
-            std::cout << "4. CGPA\n";
-            std::cout << "5. Email\n";
-            std::cout << "6. Phone\n";
-            std::cout << "7. Everything\n";
-            std::cout << "8. Cancel\n";
+                std::cout << "\n========== Student Found ==========\n";
+                while (true)
+                {
+                    std::cout << "What do you want to update?\n";
+                    std::cout << "1. Name\n";
+                    std::cout << "2. Department\n";
+                    std::cout << "3. Semester\n";
+                    std::cout << "4. CGPA\n";
+                    std::cout << "5. Email\n";
+                    std::cout << "6. Phone\n";
+                    std::cout << "7. Everything\n";
+                    std::cout << "8. Cancel\n";
 
-            int choice;
+                    int choice;
 
+                    while (true)
+                    {
+                        std::cout << "\nEnter your choice: ";
+                        std::getline(std::cin, input);
+
+                        try
+                        {
+                            size_t pos;
+                            choice = std::stoi(input, &pos);
+
+                            if (pos != input.length())
+                            {
+                                std::cout << "\nInvalid input. Please enter a number between 1 and 8.\n";
+                                continue;
+                            }
+                        }
+                        catch (...)
+                        {
+                            std::cout << "\nInvalid input. Please enter a number between 1 and 8.\n";
+                            continue;
+                        }
+
+                        if (choice < 1 || choice > 8)
+                        {
+                            std::cout << "\nChoice must be between 1 and 8.\n";
+                            continue;
+                        }
+
+                        break;
+                    }
+                    switch (choice)
+                    {
+                    case 1:
+                    {
+                        std::string newName;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New Name: ";
+                            std::getline(std::cin, newName);
+
+                            if (!isValidName(newName))
+                            {
+                                std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setName(newName);
+                        saveToFile();
+
+                        std::cout << "\nStudent name updated successfully!\n";
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        std::string newDepartment;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New Department: ";
+                            std::getline(std::cin, newDepartment);
+
+                            if (!isValidDepartment(newDepartment))
+                            {
+                                std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setDepartment(newDepartment);
+                        saveToFile();
+
+                        std::cout << "\nDepartment updated successfully!\n";
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        int newSemester;
+                        std::string semesterInput;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New Semester: ";
+                            std::getline(std::cin, semesterInput);
+
+                            try
+                            {
+                                size_t pos;
+                                newSemester = std::stoi(semesterInput, &pos);
+
+                                if (pos != semesterInput.length())
+                                {
+                                    std::cout << "\nInvalid input. Please enter a numeric semester.\n";
+                                    continue;
+                                }
+                            }
+                            catch (...)
+                            {
+                                std::cout << "\nInvalid input. Please enter a numeric semester.\n";
+                                continue;
+                            }
+
+                            if (newSemester < 1 || newSemester > 12)
+                            {
+                                std::cout << "\nSemester must be between 1 and 12.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setSemester(newSemester);
+                        saveToFile();
+
+                        std::cout << "\nSemester updated successfully!\n";
+                        break;
+                    }
+
+                    case 4:
+                    {
+                        double newCgpa;
+                        std::string cgpaInput;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New CGPA: ";
+                            std::getline(std::cin, cgpaInput);
+
+                            try
+                            {
+                                size_t pos;
+                                newCgpa = std::stod(cgpaInput, &pos);
+
+                                if (pos != cgpaInput.length())
+                                {
+                                    std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
+                                    continue;
+                                }
+                            }
+                            catch (...)
+                            {
+                                std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
+                                continue;
+                            }
+
+                            if (newCgpa < 0.0 || newCgpa > 4.0)
+                            {
+                                std::cout << "\nCGPA must be between 0.00 and 4.00.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setCgpa(newCgpa);
+                        saveToFile();
+
+                        std::cout << "\nCGPA updated successfully!\n";
+                        break;
+                    }
+
+                    case 5:
+                    {
+                        std::string newEmail;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New Email: ";
+                            std::getline(std::cin, newEmail);
+
+                            if (!isValidEmail(newEmail))
+                            {
+                                std::cout << "\nInvalid email. Please enter a valid email address.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setEmail(newEmail);
+                        saveToFile();
+
+                        std::cout << "\nEmail updated successfully!\n";
+                        break;
+                    }
+
+                    case 6:
+                    {
+                        std::string newPhone;
+
+                        while (true)
+                        {
+                            std::cout << "Enter New Phone: ";
+                            std::getline(std::cin, newPhone);
+
+                            if (!isValidPhone(newPhone))
+                            {
+                                std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        student.setPhone(newPhone);
+                        saveToFile();
+
+                        std::cout << "\nPhone updated successfully!\n";
+                        break;
+                    }
+
+                    case 7:
+                    {
+                        std::string newName;
+                        std::string newDepartment;
+                        int newSemester;
+                        double newCgpa;
+                        std::string newEmail;
+                        std::string newPhone;
+
+                        // Name Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New Name: ";
+                            std::getline(std::cin, newName);
+
+                            if (!isValidName(newName))
+                            {
+                                std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // Department Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New Department: ";
+                            std::getline(std::cin, newDepartment);
+
+                            if (!isValidDepartment(newDepartment))
+                            {
+                                std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // Semester Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New Semester: ";
+                            std::getline(std::cin, input);
+
+                            try
+                            {
+                                size_t pos;
+                                newSemester = std::stoi(input, &pos);
+
+                                if (pos != input.length())
+                                {
+                                    std::cout << "\nInvalid input. Please enter a numeric semester.\n";
+                                    continue;
+                                }
+                            }
+                            catch (...)
+                            {
+                                std::cout << "\nInvalid input. Please enter a numeric semester.\n";
+                                continue;
+                            }
+
+                            if (newSemester < 1 || newSemester > 12)
+                            {
+                                std::cout << "\nSemester must be between 1 and 12.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // CGPA Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New CGPA: ";
+                            std::getline(std::cin, input);
+
+                            try
+                            {
+                                size_t pos;
+                                newCgpa = std::stod(input, &pos);
+
+                                if (pos != input.length())
+                                {
+                                    std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
+                                    continue;
+                                }
+                            }
+                            catch (...)
+                            {
+                                std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
+                                continue;
+                            }
+
+                            if (newCgpa < 0.0 || newCgpa > 4.0)
+                            {
+                                std::cout << "\nCGPA must be between 0.00 and 4.00.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // Email Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New Email: ";
+                            std::getline(std::cin, newEmail);
+
+                            if (!isValidEmail(newEmail))
+                            {
+                                std::cout << "\nInvalid email. Please enter a valid email address.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // Phone Validation
+                        while (true)
+                        {
+                            std::cout << "Enter New Phone: ";
+                            std::getline(std::cin, newPhone);
+
+                            if (!isValidPhone(newPhone))
+                            {
+                                std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        // Update all information
+                        student.setName(newName);
+                        student.setDepartment(newDepartment);
+                        student.setSemester(newSemester);
+                        student.setCgpa(newCgpa);
+                        student.setEmail(newEmail);
+                        student.setPhone(newPhone);
+
+                        saveToFile();
+
+                        std::cout << "\nStudent updated successfully!\n";
+
+                        break;
+                    }
+
+                    case 8:
+                    {
+                        std::cout << "\nReturning to Main Menu.\n";
+                        return;
+                    }
+
+                    default:
+                    {
+                        std::cout << "\nThis update option is under development.\n";
+                    }
+                    }
+                }
+            }
+        }
+
+        if (!found)
+        {
+            std::cout << "\nStudent not found.\n";
             while (true)
             {
-                std::cout << "\nEnter your choice: ";
-                std::getline(std::cin, input);
+                std::cout << "\n1. Try Again\n";
+                std::cout << "2. Back to Main Menu\n";
+                std::cout << "Enter your choice: ";
+
+                std::string retryInput;
+                std::getline(std::cin, retryInput);
+
+                int retryChoice;
 
                 try
                 {
                     size_t pos;
-                    choice = std::stoi(input, &pos);
+                    retryChoice = std::stoi(retryInput, &pos);
 
-                    if (pos != input.length())
+                    if (pos != retryInput.length())
                     {
-                        std::cout << "\nInvalid input. Please enter a number between 1 and 8.\n";
+                        std::cout << "\nInvalid input. Please enter 1 or 2.\n";
                         continue;
                     }
                 }
                 catch (...)
                 {
-                    std::cout << "\nInvalid input. Please enter a number between 1 and 8.\n";
+                    std::cout << "\nInvalid input. Please enter 1 or 2.\n";
                     continue;
                 }
 
-                if (choice < 1 || choice > 8)
+                if (retryChoice == 1)
                 {
-                    std::cout << "\nChoice must be between 1 and 8.\n";
-                    continue;
+                    break;
                 }
-
-                break;
+                else if (retryChoice == 2)
+                {
+                    return;
+                }
+                else
+                {
+                    std::cout << "\nInvalid choice. Please enter 1 or 2.\n";
+                }
             }
-            switch (choice)
-            {
-            case 1:
-            {
-                std::string newName;
-
-                while (true)
-                {
-                    std::cout << "Enter New Name: ";
-                    std::getline(std::cin, newName);
-
-                    if (!isValidName(newName))
-                    {
-                        std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setName(newName);
-                saveToFile();
-
-                std::cout << "\nStudent name updated successfully!\n";
-                break;
-            }
-
-            case 2:
-            {
-                std::string newDepartment;
-
-                while (true)
-                {
-                    std::cout << "Enter New Department: ";
-                    std::getline(std::cin, newDepartment);
-
-                    if (!isValidDepartment(newDepartment))
-                    {
-                        std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setDepartment(newDepartment);
-                saveToFile();
-
-                std::cout << "\nDepartment updated successfully!\n";
-                break;
-            }
-
-            case 3:
-            {
-                int newSemester;
-                std::string semesterInput;
-
-                while (true)
-                {
-                    std::cout << "Enter New Semester: ";
-                    std::getline(std::cin, semesterInput);
-
-                    try
-                    {
-                        size_t pos;
-                        newSemester = std::stoi(semesterInput, &pos);
-
-                        if (pos != semesterInput.length())
-                        {
-                            std::cout << "\nInvalid input. Please enter a numeric semester.\n";
-                            continue;
-                        }
-                    }
-                    catch (...)
-                    {
-                        std::cout << "\nInvalid input. Please enter a numeric semester.\n";
-                        continue;
-                    }
-
-                    if (newSemester < 1 || newSemester > 12)
-                    {
-                        std::cout << "\nSemester must be between 1 and 12.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setSemester(newSemester);
-                saveToFile();
-
-                std::cout << "\nSemester updated successfully!\n";
-                break;
-            }
-
-            case 4:
-            {
-                double newCgpa;
-                std::string cgpaInput;
-
-                while (true)
-                {
-                    std::cout << "Enter New CGPA: ";
-                    std::getline(std::cin, cgpaInput);
-
-                    try
-                    {
-                        size_t pos;
-                        newCgpa = std::stod(cgpaInput, &pos);
-
-                        if (pos != cgpaInput.length())
-                        {
-                            std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
-                            continue;
-                        }
-                    }
-                    catch (...)
-                    {
-                        std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
-                        continue;
-                    }
-
-                    if (newCgpa < 0.0 || newCgpa > 4.0)
-                    {
-                        std::cout << "\nCGPA must be between 0.00 and 4.00.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setCgpa(newCgpa);
-                saveToFile();
-
-                std::cout << "\nCGPA updated successfully!\n";
-                break;
-            }
-
-            case 5:
-            {
-                std::string newEmail;
-
-                while (true)
-                {
-                    std::cout << "Enter New Email: ";
-                    std::getline(std::cin, newEmail);
-
-                    if (!isValidEmail(newEmail))
-                    {
-                        std::cout << "\nInvalid email. Please enter a valid email address.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setEmail(newEmail);
-                saveToFile();
-
-                std::cout << "\nEmail updated successfully!\n";
-                break;
-            }
-
-            case 6:
-            {
-                std::string newPhone;
-
-                while (true)
-                {
-                    std::cout << "Enter New Phone: ";
-                    std::getline(std::cin, newPhone);
-
-                    if (!isValidPhone(newPhone))
-                    {
-                        std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                student.setPhone(newPhone);
-                saveToFile();
-
-                std::cout << "\nPhone updated successfully!\n";
-                break;
-            }
-
-            case 7:
-            {
-                std::string newName;
-                std::string newDepartment;
-                int newSemester;
-                double newCgpa;
-                std::string newEmail;
-                std::string newPhone;
-
-                // Name Validation
-                while (true)
-                {
-                    std::cout << "Enter New Name: ";
-                    std::getline(std::cin, newName);
-
-                    if (!isValidName(newName))
-                    {
-                        std::cout << "\nInvalid name. Name may contain only letters, spaces, periods (.), hyphens (-), and apostrophes (').\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // Department Validation
-                while (true)
-                {
-                    std::cout << "Enter New Department: ";
-                    std::getline(std::cin, newDepartment);
-
-                    if (!isValidDepartment(newDepartment))
-                    {
-                        std::cout << "\nInvalid department. Department may contain only letters, spaces, and ampersands (&).\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // Semester Validation
-                while (true)
-                {
-                    std::cout << "Enter New Semester: ";
-                    std::getline(std::cin, input);
-
-                    try
-                    {
-                        size_t pos;
-                        newSemester = std::stoi(input, &pos);
-
-                        if (pos != input.length())
-                        {
-                            std::cout << "\nInvalid input. Please enter a numeric semester.\n";
-                            continue;
-                        }
-                    }
-                    catch (...)
-                    {
-                        std::cout << "\nInvalid input. Please enter a numeric semester.\n";
-                        continue;
-                    }
-
-                    if (newSemester < 1 || newSemester > 12)
-                    {
-                        std::cout << "\nSemester must be between 1 and 12.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // CGPA Validation
-                while (true)
-                {
-                    std::cout << "Enter New CGPA: ";
-                    std::getline(std::cin, input);
-
-                    try
-                    {
-                        size_t pos;
-                        newCgpa = std::stod(input, &pos);
-
-                        if (pos != input.length())
-                        {
-                            std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
-                            continue;
-                        }
-                    }
-                    catch (...)
-                    {
-                        std::cout << "\nInvalid input. Please enter a numeric CGPA.\n";
-                        continue;
-                    }
-
-                    if (newCgpa < 0.0 || newCgpa > 4.0)
-                    {
-                        std::cout << "\nCGPA must be between 0.00 and 4.00.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // Email Validation
-                while (true)
-                {
-                    std::cout << "Enter New Email: ";
-                    std::getline(std::cin, newEmail);
-
-                    if (!isValidEmail(newEmail))
-                    {
-                        std::cout << "\nInvalid email. Please enter a valid email address.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // Phone Validation
-                while (true)
-                {
-                    std::cout << "Enter New Phone: ";
-                    std::getline(std::cin, newPhone);
-
-                    if (!isValidPhone(newPhone))
-                    {
-                        std::cout << "\nPlease enter a valid Bangladeshi phone number.\n";
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // Update all information
-                student.setName(newName);
-                student.setDepartment(newDepartment);
-                student.setSemester(newSemester);
-                student.setCgpa(newCgpa);
-                student.setEmail(newEmail);
-                student.setPhone(newPhone);
-
-                saveToFile();
-
-                std::cout << "\nStudent updated successfully!\n";
-
-                break;
-            }
-
-            case 8:
-            {
-                std::cout << "\nUpdate cancelled.\n";
-                break;
-            }
-
-            default:
-            {
-                std::cout << "\nThis update option is under development.\n";
-            }
-            }
-            return;
         }
     }
-
-    std::cout << "\nStudent not found.\n";
 }
 
 void StudentManager::deleteStudent()
 {
-    int id;
-    std::string input;
-
     while (true)
     {
-        std::cout << "\nEnter Student ID: ";
-        std::getline(std::cin, input);
+        int id;
+        std::string input;
 
-        try
+        while (true)
         {
-            size_t pos;
-            id = std::stoi(input, &pos);
+            std::cout << "\nEnter Student ID: ";
+            std::getline(std::cin, input);
 
-            if (pos != input.length())
+            try
+            {
+                size_t pos;
+                id = std::stoi(input, &pos);
+
+                if (pos != input.length())
+                {
+                    std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
+                    continue;
+                }
+            }
+            catch (...)
             {
                 std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
                 continue;
             }
+
+            if (id <= 0)
+            {
+                std::cout << "\nStudent ID must be greater than 0.\n";
+                continue;
+            }
+
+            break;
         }
-        catch (...)
+        bool found = false;
+        for (auto it = students.begin(); it != students.end(); ++it)
         {
-            std::cout << "\nInvalid input. Please enter a numeric Student ID.\n";
-            continue;
+            if (it->getId() == id)
+            {
+                found = true;
+
+                std::cout << "\n========== Student Found ==========\n\n";
+
+                it->display();
+
+                std::string choice;
+
+                while (true)
+                {
+                    std::cout << "\nAre you sure you want to delete this student? (YES/NO): ";
+                    std::getline(std::cin, choice);
+
+                    std::transform(choice.begin(), choice.end(), choice.begin(),
+                                   [](unsigned char c)
+                                   {
+                                       return std::tolower(c);
+                                   });
+
+                    if (choice == "yes")
+                    {
+                        students.erase(it);
+                        saveToFile();
+                        std::cout << "\nStudent deleted successfully!\n";
+                        break;
+                    }
+                    else if (choice == "no")
+                    {
+                        std::cout << "\nDeletion cancelled.\n";
+                        break;
+                    }
+
+                    std::cout << "\nInvalid input. Please enter YES or NO.\n";
+                }
+
+                std::string again;
+
+                while (true)
+                {
+                    std::cout << "\nDo you want to delete another student? (YES/NO): ";
+                    std::getline(std::cin, again);
+
+                    std::transform(again.begin(), again.end(), again.begin(),
+                                   [](unsigned char c)
+                                   {
+                                       return std::tolower(c);
+                                   });
+
+                    if (again == "yes")
+                    {
+                        break;
+                    }
+                    else if (again == "no")
+                    {
+                        return;
+                    }
+
+                    std::cout << "\nInvalid input. Please enter YES or NO.\n";
+                }
+                break;
+            }
         }
 
-        if (id <= 0)
+        if (!found)
         {
-            std::cout << "\nStudent ID must be greater than 0.\n";
-            continue;
-        }
-
-        break;
-    }
-
-    for (auto it = students.begin(); it != students.end(); ++it)
-    {
-        if (it->getId() == id)
-        {
-            std::cout << "\n========== Student Found ==========\n\n";
-
-            it->display();
-
-            std::string choice;
+            std::cout << "\nStudent not found.\n";
 
             while (true)
             {
-                std::cout << "\nAre you sure you want to delete this student? (YES/NO): ";
-                std::getline(std::cin, choice);
+                std::cout << "\n1. Try Again\n";
+                std::cout << "2. Back to Main Menu\n";
+                std::cout << "Enter your choice: ";
 
-                std::transform(choice.begin(), choice.end(), choice.begin(),
-                               [](unsigned char c)
-                               {
-                                   return std::tolower(c);
-                               });
+                std::string retryInput;
+                std::getline(std::cin, retryInput);
 
-                if (choice == "yes")
+                int retryChoice;
+
+                try
                 {
-                    students.erase(it);
-                    saveToFile();
-                    std::cout << "\nStudent deleted successfully!\n";
+                    size_t pos;
+                    retryChoice = std::stoi(retryInput, &pos);
+
+                    if (pos != retryInput.length())
+                    {
+                        std::cout << "\nInvalid input. Please enter 1 or 2.\n";
+                        continue;
+                    }
+                }
+                catch (...)
+                {
+                    std::cout << "\nInvalid input. Please enter 1 or 2.\n";
+                    continue;
+                }
+
+                if (retryChoice == 1)
+                {
                     break;
                 }
-                else if (choice == "no")
+                else if (retryChoice == 2)
                 {
-                    std::cout << "\nDeletion cancelled.\n";
-                    break;
+                    return;
                 }
-
-                std::cout << "\nInvalid input. Please enter YES or NO.\n";
+                else
+                {
+                    std::cout << "\nInvalid choice. Please enter 1 or 2.\n";
+                }
             }
-
-            return;
         }
     }
-
-    std::cout << "\nStudent not found.\n";
 }
 
 void StudentManager::displayStudents() const
@@ -1115,7 +1241,22 @@ void StudentManager::displayStudentsSortedByName() const
     std::sort(sortedStudents.begin(), sortedStudents.end(),
               [](const Student &a, const Student &b)
               {
-                  return a.getName() < b.getName();
+                  std::string nameA = a.getName();
+                  std::string nameB = b.getName();
+
+                  std::transform(nameA.begin(), nameA.end(), nameA.begin(),
+                                 [](unsigned char c)
+                                 {
+                                     return std::tolower(c);
+                                 });
+
+                  std::transform(nameB.begin(), nameB.end(), nameB.begin(),
+                                 [](unsigned char c)
+                                 {
+                                     return std::tolower(c);
+                                 });
+
+                  return nameA < nameB;
               });
 
     for (const Student &student : sortedStudents)
@@ -1161,7 +1302,24 @@ void StudentManager::displayStudentsSortedByDepartment() const
     std::sort(sortedStudents.begin(), sortedStudents.end(),
               [](const Student &a, const Student &b)
               {
-                  return a.getDepartment() < b.getDepartment();
+                  std::string departmentA = a.getDepartment();
+                  std::string departmentB = b.getDepartment();
+
+                  std::transform(departmentA.begin(), departmentA.end(),
+                                 departmentA.begin(),
+                                 [](unsigned char c)
+                                 {
+                                     return std::tolower(c);
+                                 });
+
+                  std::transform(departmentB.begin(), departmentB.end(),
+                                 departmentB.begin(),
+                                 [](unsigned char c)
+                                 {
+                                     return std::tolower(c);
+                                 });
+
+                  return departmentA < departmentB;
               });
 
     for (const Student &student : sortedStudents)
