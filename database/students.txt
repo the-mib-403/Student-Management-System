@@ -10,3 +10,4 @@
 250,Nihad,Statistics,5,3.8,nihad@gmail.com,01785214796
 240,Jamal,CSE,6,3.9,moon12@gmail.com,01525896314
 132,Karim Hossin,EEE,5,3.9,karim@gmail.com,01375321485
+295,Ratul,CSE,4,3.5,ratul@gmail.com,01785236914
