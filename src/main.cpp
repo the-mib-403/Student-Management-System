@@ -22,13 +22,13 @@ int main()
 
             if (pos != input.length())
             {
-                std::cout << "\nInvalid choice. Please enter a number between 1 and 6.\n";
+                std::cout << "\nInvalid choice. Please enter a number between 1 and 8.\n";
                 continue;
             }
         }
         catch (...)
         {
-            std::cout << "\nInvalid choice. Please enter a number between 1 and 6.\n";
+            std::cout << "\nInvalid choice. Please enter a number between 1 and 8.\n";
             continue;
         }
 
@@ -179,9 +179,72 @@ int main()
             break;
 
         case 6:
+            manager.undoLastAction();
+            break;
+
+        case 7:
+        {
+            bool backToMain = false;
+
+            while (true)
+            {
+                menu.showRequestMenu();
+
+                std::string requestInput;
+                std::getline(std::cin, requestInput);
+
+                int requestChoice;
+
+                try
+                {
+                    size_t pos;
+                    requestChoice = std::stoi(requestInput, &pos);
+
+                    if (pos != requestInput.length())
+                    {
+                        std::cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
+                        continue;
+                    }
+                }
+                catch (...)
+                {
+                    std::cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
+                    continue;
+                }
+                switch (requestChoice)
+                {
+                case 1:
+                    manager.addRequest();
+                    break;
+
+                case 2:
+                    manager.processRequest();
+                    break;
+
+                case 3:
+                    manager.displayRequests();
+                    break;
+
+                case 4:
+                    backToMain = true;
+                    break;
+
+                default:
+                    std::cout << "\nInvalid choice. Please enter a number between 1 and 4.\n";
+                    continue;
+                }
+
+                if (backToMain)
+                {
+                    break;
+                }
+            }
+
+            break;
+        }
+        case 8:
             std::cout << "\nThank you for using Student Management System.\n";
             return 0;
-
         default:
             std::cout << "\nInvalid Choice!\n";
         }

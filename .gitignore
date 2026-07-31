@@ -1,5 +1,29 @@
+# Executables
 *.exe
-.vscode/
-output/
+
+# Object files
 *.o
 *.obj
+
+# Build folders
+output/
+bin/
+build/
+
+# VS Code
+.vscode/
+
+# Code::Blocks generated files
+*.layout
+*.depend
+*.gch
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# OS generated files
+.DS_Store
+Thumbs.db

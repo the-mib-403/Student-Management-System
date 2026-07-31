@@ -6,4 +6,5 @@ public:
     void showMainMenu() const;
     void showDisplayMenu() const;
     void showSearchMenu() const;
+    void showRequestMenu() const;
 };

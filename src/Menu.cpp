@@ -13,7 +13,9 @@ void Menu::showMainMenu() const
     std::cout << "3. Search Student\n";
     std::cout << "4. Update Student\n";
     std::cout << "5. Delete Student\n";
-    std::cout << "6. Exit\n";
+    std::cout << "6. Undo Last Action\n";
+    std::cout << "7. Manage Requests\n";
+    std::cout << "8. Exit\n";
     std::cout << "Enter your choice: ";
 }
 
@@ -44,6 +46,20 @@ void Menu::showSearchMenu() const
     std::cout << "1. Search by Student ID\n";
     std::cout << "2. Search by Name\n";
     std::cout << "3. Search by Department\n";
+    std::cout << "4. Back to Main Menu\n";
+    std::cout << "Enter your choice: ";
+}
+
+void Menu::showRequestMenu() const
+{
+    std::cout << "\n";
+    std::cout << "=========================================\n";
+    std::cout << "           REQUEST MANAGEMENT\n";
+    std::cout << "=========================================\n\n";
+
+    std::cout << "1. Add Request\n";
+    std::cout << "2. Process Request\n";
+    std::cout << "3. Display Pending Requests\n";
     std::cout << "4. Back to Main Menu\n";
     std::cout << "Enter your choice: ";
 }
